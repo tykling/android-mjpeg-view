@@ -41,6 +41,7 @@ public class MjpegView extends View{
     private final Object lockBitmap = new Object();
 
     private String url;
+    private String authHeader;
     private Bitmap lastBitmap;
     private MjpegDownloader downloader;
     private Paint paint;
@@ -74,6 +75,10 @@ public class MjpegView extends View{
 
     public void setUrl(String url){
         this.url = url;
+    }
+
+    public void setAuthHeader(String authHeader){
+        this.authHeader = authHeader;
     }
 
     public void startStream(){
@@ -438,6 +443,9 @@ public class MjpegView extends View{
                 try {
                     serverUrl = new URL(url);
                     connection = (HttpURLConnection) serverUrl.openConnection();
+                    if (authHeader != null) {
+                        connection.setRequestProperty("Authorization", authHeader);
+                    }
                     connection.setDoInput(true);
                     connection.connect();
 
